@@ -19,6 +19,7 @@ results whose second check is not on file.
 | `tables/` | 12 living record tables: `TABLE.md`, `CHECKER.md`, `checker.py`, `SUBMIT.md` in each |
 | `tests/` | the 1,000-cell family test and the checker tests |
 | `scripts/make_tables.py` | writes each `TABLE.md` and `SUBMIT.md` from `data/records.csv` |
+| `range/` | the range analysis behind the family cells (`RANGE.md`) and its two count programs with their outputs |
 
 ## The numbers (19 November 2026)
 
@@ -112,8 +113,11 @@ which is practical for q <= 16. The sampled check tests the construction at the 
 
 The counted range at q = 4^s >= 64 is k > R(q), where R(q) is the largest width that any published construction class
 with at most 3q^3 - 2 rows reaches, by the lab's range analysis (`qvrecords.theorem_k.counted_range` gives the
-formula). That analysis was refereed inside the lab on 18 November 2026 and has not been peer reviewed; published
-constructions we did not find could reach further. At q = 16 the counted range is the one the keeper lists.
+formula). That analysis, `range/RANGE.md`, was refereed inside the lab on 18 November 2026 and has not been peer
+reviewed; published constructions we did not find could reach further. Besides its proofs it rests on three stated
+facts about the literature, and the most fragile is P2: nobody has published a 3-row search at q >= 64, and such a
+search could remove the bottom of a q's range. The number is one theorem settling many cells past every table, not
+that many separate discoveries. At q = 16 the counted range is the one the keeper lists.
 
 Tests: `python3 -m unittest discover -s tests` draws 1,000 cells uniformly from all 13.6e18 counted cells and checks
 each with both routines (the construction's and the independent one must agree on every column they both compute,
