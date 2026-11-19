@@ -205,7 +205,7 @@ _CACHE = {}
 
 def family(q):
     if q not in _CACHE:
-        if len(_CACHE) > 8:
+        if len(_CACHE) > 24:
             _CACHE.clear()
         _CACHE[q] = TheoremK(q)
     return _CACHE[q]

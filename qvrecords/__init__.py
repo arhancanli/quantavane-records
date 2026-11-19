@@ -29,14 +29,14 @@ __version__ = "0.1.0"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
 
-S_MIN, S_MAX = 3, 16     # the declared range of Theorem K: q = 4^s for 3 <= s <= 16, plus q = 16
+S_MIN, S_MAX = 3, 20     # the declared range of Theorem K: q = 4^s for 3 <= s <= 20, plus q = 16 (s <= 16 until 20 Nov 2026)
 
 
 def families():
     return {"theorem-k": {
         "statement": "CAN(3, k, q) <= 3q^3 - 2 for q = 4^s and 1 <= k <= 2(q^2 + q + 1)",
         "params": {"q": "a power of 4, at least 4", "k": "1 .. 2(q^2 + q + 1)"},
-        "counted": "q = 16 with 379 <= k <= 546 (keeper-listed), and q = 4^s, 3 <= s <= 16, with k in counted_range(q)",
+        "counted": "q = 16 with 379 <= k <= 546 (keeper-listed), and q = 4^s, 3 <= s <= 20, with k in counted_range(q)",
         "source": theorem_k.SOURCE}}
 
 
@@ -59,7 +59,7 @@ def check(cert, **kw):
 
 
 def _blocks():
-    """the counted cells in their global order: q = 16 first, then s = 3 .. 16"""
+    """the counted cells in their global order: q = 16 first, then s = 3 .. 20"""
     out = [(16,) + theorem_k.counted_range(16)]
     for s in range(S_MIN, S_MAX + 1):
         q = 4 ** s

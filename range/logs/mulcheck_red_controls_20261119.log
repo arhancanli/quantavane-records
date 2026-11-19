@@ -1,0 +1,27 @@
+# red controls for kcheck_B v2's multiplication cross-check (Thu Nov 19 23:50:53 +04 2026); kcheck_B.c sha256 efbda2edc91ec806
+# red1.c: mulF truncated to a 100-bit word after the modulus is fixed (models an arithmetic overflow above n = 100): must REFUSE at s >= 17, harmless at s = 16
+# red2.c: mul2w drops the high half of its middle product term: must REFUSE once n > 64 (s >= 11)
+red1 s 16
+kcheck_B mulcheck s 16 n 96: mulF vs mul2w 0/4016 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 16 n 96 F 100000000:000000000000006f samples 10 seed 1 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS
+  exit 0
+red1 s 17
+kcheck_B mulcheck s 17 n 102: mulF vs mul2w 4012/4016 disagree; z^(2^n) = z fails 0/8
+REFUSED: multiplication cross-check
+  exit 2
+red1 s 20
+kcheck_B mulcheck s 20 n 120: mulF vs mul2w 4012/4016 disagree; z^(2^n) = z fails 0/8
+REFUSED: multiplication cross-check
+  exit 2
+red2 s 10
+kcheck_B mulcheck s 10 n 60: mulF vs mul2w 0/4016 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 10 n 60 F 0:1000000000000003 samples 10 seed 1 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS
+  exit 0
+red2 s 11
+kcheck_B mulcheck s 11 n 66: mulF vs mul2w 1493/4016 disagree; z^(2^n) = z fails 0/8
+REFUSED: multiplication cross-check
+  exit 2
+red2 s 17
+kcheck_B mulcheck s 17 n 102: mulF vs mul2w 4004/4016 disagree; z^(2^n) = z fails 0/8
+REFUSED: multiplication cross-check
+  exit 2

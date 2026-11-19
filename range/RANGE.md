@@ -1,12 +1,13 @@
-# Theorem K over a declared range: q = 4^s, 3 <= s <= 16 (18 Nov 2026)
+# Theorem K over a declared range: q = 4^s, 3 <= s <= 20 (18 Nov 2026; s = 17-20 added 20 Nov 2026, section 8)
 
 Quantavane, 18 Nov 2026; published 19 Nov 2026 with the records dataset. Theorem K itself (the array and a sketch of
 its proof) is public in github.com/arhancanli/quantavane-covering-arrays, folder `three-row/`; a note with the full
 proof is in preparation. This note compares Theorem K with every published construction class for every s in the
 declared range: a cell counts only where the theorem's array has fewer rows than all of them. The analysis was
 refereed inside Quantavane on 18 Nov 2026 (section 7) and has not been peer reviewed. The two count programs,
-range_cells_A.py and range_cells_B.c, and their outputs are in this folder; the array checks named in section 4 are
-the lab's programs, and `qvrecords` in this repository carries its own independent check of any cell.
+range_cells_A.py and range_cells_B.c, and their outputs are in this folder. Since 20 Nov 2026 so are the two array
+checkers of section 4 (kcheck_A.py, kcheck_B.c), a fourth count check (classcheck_C.py) and every log they wrote
+(logs/); `qvrecords` in this repository carries its own independent check of any cell.
 
 ## 1. What is counted
 
@@ -38,7 +39,8 @@ largest prime power with 2Q^3 - Q^2 - 2(Q - q) <= N_K. Its reach is R_I = max(R1
 *Fusion margin:* the next prime power q2 > q1 needs N_K + m rows, with m = 193,377 at s = 3, 7,442,889 at s = 4 and
 5.5e20 at s = 16 (column `margin`). A published fusion rule would have to save m / (q2 - q) rows per fused symbol
 (12,891 at s = 3, about 3.15 q^2; relative to q it shrinks, to about 99 q at s = 7 and 207 q at s = 16, never below
-about 99 q in the range) to move q1, against the 2 per symbol of the convention.
+about 99 q in the range; at s = 17, 18, 19, 20 it is about 3,298 q, 561 q, 1,129 q and 579 q, classcheck_C.py) to move
+q1, against the 2 per symbol of the convention.
 
 **Class II: 3-row constructions.** Over Q > q a 3-row CPHF array has at least 3(Q^3 - Q) + Q - 3(Q^2 - Q) - 2(Q - q)
 = 3Q^3 - 3Q^2 - Q + 2q rows, even with all three pairs restricted and symbols fused. This exceeds N_K: 3(Q^3 - q^3) =
@@ -122,14 +124,16 @@ row 2 must cover by Lemma 2. H5: B_x, E_x and any third column. The programs con
 (precondition count 0), so the hard cases test the lemmas, not luck. A: 3,000 samples per case and s. B: 10,000.
 Tampers, each at s = 3, 8 and 16 in both programs:
 `inv` (row 2 of E is b x, not b x^-1) must FAIL. `bq` (b in GF(q)) must FAIL. `mod` (a reducible modulus) must be REFUSED.
-`cube` (c, resp. h, a cube) must be REFUSED. All 32 clean runs PASS; all 24 tamper runs FAIL or are REFUSED.
+`cube` (c, resp. h, a cube) must be REFUSED. All 32 clean runs PASS; all 24 tamper runs FAIL or are REFUSED
+(logs/samples_20261118.log). For s = 17-20 see section 8: 8 more clean runs PASS and 32 more tamper runs FAIL or are
+REFUSED.
 
 *Exhaustive Lemma 1/2 cases (added after the range referee, 18 Nov).* The array is invariant under x -> yx (rows 1 and 3
 multiplied by y, row 2 by y^-1), so every H3 triple is equivalent to one with y = 1 and every H4 triple to one with
 x = 1. `kcheck_B S 0 SEED` checks all of them: H3 and H4 over all pairs of the q + 1 points of <1, b>, and H5 = (B_1,
 E_1, any third column) over all 2(q^2+q+1) - 2 columns. The referee's program ref_kcheck.py (a third field model:
 GF(2^(6s)) from a primitive polynomial, independence by GF(2)-rank) did the same at s = 3, 4 with identical counts.
-Results (precondition broken 0 in every row):
+Results (logs/exhaustive_lemma2_20261118.log; precondition broken 0 in every row):
 
 | s | q | H3 triples | H4 triples | H5 triples | uncovered |
 |---|---|---:|---:|---:|---|
@@ -164,23 +168,31 @@ sampled ones are a sanity check, not the evidence.
 | 14 | 268,435,456 | 307,281,859 | 94,422,141,177,777,741 | 49,693,047,434,949,045 | 53,005,919,236,087,056 |
 | 15 | 1,073,741,824 | 1,229,127,547 | 1,510,754,528,023,364,757 | 795,088,483,337,812,845 | 848,094,402,573,899,901 |
 | 16 | 4,294,967,296 | 4,916,510,197 | 24,172,072,522,121,489,007 | 12,721,415,633,887,548,819 | 13,569,510,036,461,448,720 |
+| 17 | 17,179,869,184 | 19,666,040,921 | 386,753,165,526,112,569,163 | 203,542,644,866,952,820,919 | 217,112,154,903,414,269,639 |
+| 18 | 68,719,476,736 | 78,664,163,737 | 6,188,050,656,520,209,968,907 | 3,256,682,309,356,519,411,959 | 3,473,794,464,259,933,681,598 |
+| 19 | 274,877,906,944 | 314,656,655,023 | 99,008,810,550,577,887,785,553 | 52,106,916,901,800,514,866,609 | 55,580,711,366,060,448,548,207 |
+| 20 | 1,099,511,627,776 | 1,258,626,620,143 | 1,584,140,968,933,850,239,960,593 | 833,710,670,297,607,132,707,313 | 889,291,381,663,667,581,255,520 |
 
 R(s) is always the class I reach R1(q1) = q1^2 + q1 + 1 (q1 odd), so the counts equal those of the 17 Nov count
 for s <= 10. Lemma R1 now proves that bound for every 2-row CPHF, not only for RMS. Classes IIa, IIb, IId and IIe reach
 at most (q+2)^2 + q + 2, 4 q^1.5 + 3, q^2 + 2q + 2 and about q^2 + 5q, all below R(s) for every s >= 3. Inside the tables (q = 16) the count
 is the 168 cells the keeper lists.
 
-**Declared range s <= 16: 13,569,510,036,461,448,720 cells (1.36e19), plus 168 at q = 16.** The programs also
-run to s = 20 (8.9e23, out_A.txt), but kcheck_B stops at s = 16, so the declared range stops there.
+**Declared range s <= 20 (20 Nov 2026): 889,291,381,663,667,581,255,520 cells (8.9e23), plus 168 at q = 16.** Until
+20 Nov the declared range stopped at s = 16 (13,569,510,036,461,448,720 cells, 1.36e19) because the second array
+checker, kcheck_B.c, refused s > 16; section 8 records the extension. Step by step: s <= 17 gives 2.17e20, s <= 18
+3.47e21, s <= 19 5.56e22. The count programs stop at s = 20, and so does the declared range.
 
 ## 6. How to read this number
 
 It is one theorem. Each q adds about (2 - 1.5^(2/3)) q^2 = 0.69 q^2 cells, so the total is set by where the declared range
-stops. s <= 15 gives 8.5e17 and s <= 16 gives 1.4e19. No table lists any alphabet from 64 upward at strength 3. Under
+stops. s <= 15 gives 8.5e17, s <= 16 gives 1.4e19 and s <= 20 gives 8.9e23. No table lists any alphabet from 64 upward at strength 3. Under
 the rule's wording each cell is a record: the proved array beats every construction in sections 2-3 at that cell.
-The count also rests on the literature inputs P, P2 and P3 of section 3. P2 is the most fragile: one published
-3-row search at q = 64 or 256 could remove the bottom of those ranges. They are not 1.4e19 separate discoveries, and public wording should say "one theorem settles 1.4e19 cells past
-every table" rather than "1.4e19 records".
+The count also rests on the literature inputs P, P2 and P3 of section 3. P2 is the weakest of them: it says that
+nobody has published a 3-row search at q >= 64, which is a fact about the literature, not a theorem, and one published
+3-row search at q = 64 or 256 could remove the bottom of those ranges. They are not 8.9e23 separate discoveries, and
+public wording should say "one theorem settles 8.9e23 cells past every published construction" rather than
+"8.9e23 records".
 
 ## 7. Referee inside Quantavane (18 Nov 2026): ACCEPT WITH FIXES
 
@@ -202,3 +214,46 @@ s = 3, 4 PASS) and ran the tampers, all of which FAIL or are REFUSED. Its findin
 Its verdict on the number: **the count holds**. No published construction found moves R(s). The count rests on the
 proofs plus the literature inputs P, P2 and P3 of section 3, and should be quoted with them.
 
+
+## 8. Extension of the declared range to s = 17, 18, 19, 20 (20 Nov 2026)
+
+The declared range had stopped at s = 16 for one reason: the second array checker, kcheck_B.c, refused s > 16 (its
+field GF(2^(6s)) sits in one unsigned 128-bit word). Nothing else here depends on s <= 16: the proof of Theorem K
+covers every s, the class comparison of sections 2-3 is analytic in q, and the count programs already ran to s = 20.
+
+1. **kcheck_B.c version 2** (sha256 efbda2ed...). The field arithmetic is unchanged: its multiplication reduces after
+   every shift, so it is exact for n = 6s <= 127; the cap is now s <= 20. New: every run first compares that
+   multiplication with a second one written apart (the full 256-bit carry-less product in two 128-bit words, then long
+   division) on 4,016 pairs from its own random generator, and refuses on any mismatch; the exhaustive mode is refused
+   above s = 8. Two comments in the source are stale and were left so that the logged hash stays valid: line 3 still
+   says "6s <= 96", and the exhaustive guard's comment says the tables overflow, which holds from s = 16.
+2. **Byte-for-byte reproduction at s <= 16.** Version 2 re-ran every command behind logs/samples_20261118.log and
+   logs/exhaustive_lemma2_20261118.log (written by the earlier versions, sha256 cc7e94e6... and 4fecca10...). Every
+   output line is identical apart from the START/END lines and the hash line (logs/samples_v2repro_20261119.log,
+   logs/exhaustive_v2repro_20261119.log).
+3. **Red controls of the new cross-check** (red_controls/red1.c, red2.c; logs/mulcheck_red_controls_20261119.log): a
+   multiplication cut to a 100-bit word is harmless at s = 16 and refused at s = 17 and 20; a second multiplication with
+   its high cross term dropped is refused from s = 11.
+4. **Runs at s = 17-20** (logs/samples_s17_20261119.log ... samples_s20_20261119.log): per s, kcheck_B.c with 10,000
+   samples per case and kcheck_A.py with 3,000, cases R and H1-H5. All 8 clean runs PASS with precondition-broken 0 in
+   every case; the tampers inv and bq FAIL in both programs and mod and cube are REFUSED in both (32 of 32).
+   Commands: `cc -O2 -o kcheck_B kcheck_B.c && ./kcheck_B 17 10000 1017` and `python3 -I kcheck_A.py 17 3000 2017`.
+5. **The comparison at s = 17-20.** Every statement of sections 2-3 is either analytic in q or a number the count
+   programs give to s = 20. The fusion margin per fused symbol is about 3,298 q, 561 q, 1,129 q and 579 q at s = 17-20,
+   above the 99 q floor of section 2. A fourth count program written apart, classcheck_C.py, re-derives q1, the next
+   prime power, the margin, R(s), the cells and the totals for s = 3..20 and matches out_A.txt on every line
+   (logs/classcheck_C_20261120.txt).
+6. **A fresh referee inside Quantavane** audited the checker change and these runs only (20 Nov 2026) and accepted
+   them. It rebuilt both versions and found their output identical on 108 commands at s <= 16, and wrote its own field
+   model (irreducibility by Ben-Or's and Berlekamp's tests, independence by a GF(2) rank): at each s = 17-20 the
+   modulus is irreducible, the multiplication, inverses and Frobenius agree, and a trace of 600 triples per s from the
+   real case loop agrees with its rank test. It also ran the 18 Nov referee's third field model at s = 17 with its own
+   primitive polynomial: PASS. It notes that the hard sub-case of H5 is reached with probability about 1/q at large s,
+   so there the sampled evidence is H1-H4, and the proof carries the rest, as section 4 says.
+
+**Result.** Theorem K cells past every published construction: s <= 17: 217,112,154,903,414,269,639 (2.17e20);
+s <= 18: 3,473,794,464,259,933,681,598 (3.47e21); s <= 19: 55,580,711,366,060,448,548,207 (5.56e22); s <= 20:
+889,291,381,663,667,581,255,520 (8.9e23). With the 168 keeper-listed cells at q = 16: 889,291,381,663,667,581,255,688.
+One theorem settles 8.9e23 cells past every published construction. The count rests on the proofs and on the
+literature inputs P, P2 and P3; P2, that nobody has published a search-found 3-row array at q >= 64, is the weakest,
+and it is not a theorem.
