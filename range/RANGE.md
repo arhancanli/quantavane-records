@@ -1,4 +1,4 @@
-# Theorem K over a declared range: q = 4^s, 3 <= s <= 20 (18 Nov 2026; s = 17-20 added 20 Nov 2026, section 8)
+# Theorem K over a declared range: q = 4^s, 3 <= s <= 22 (18 Nov 2026; s = 17-22 added 20 Nov 2026, sections 8-9)
 
 Quantavane, 18 Nov 2026; published 19 Nov 2026 with the records dataset. Theorem K itself (the array and a sketch of
 its proof) is public in github.com/arhancanli/quantavane-covering-arrays, folder `three-row/`; a note with the full
@@ -180,8 +180,8 @@ is the 168 cells the keeper lists.
 
 **Declared range s <= 20 (20 Nov 2026): 889,291,381,663,667,581,255,520 cells (8.9e23), plus 168 at q = 16.** Until
 20 Nov the declared range stopped at s = 16 (13,569,510,036,461,448,720 cells, 1.36e19) because the second array
-checker, kcheck_B.c, refused s > 16; section 8 records the extension. Step by step: s <= 17 gives 2.17e20, s <= 18
-3.47e21, s <= 19 5.56e22. The count programs stop at s = 20, and so does the declared range.
+checker, kcheck_B.c, refused s > 16; section 8 records the extension to s = 20 and section 9 the extension to s = 22
+(2.28e26). Step by step: s <= 17 gives 2.17e20, s <= 18 3.47e21, s <= 19 5.56e22, s <= 21 1.42e25.
 
 ## 6. How to read this number
 
@@ -231,7 +231,7 @@ covers every s, the class comparison of sections 2-3 is analytic in q, and the c
    logs/exhaustive_lemma2_20261118.log (written by the earlier versions, sha256 cc7e94e6... and 4fecca10...). Every
    output line is identical apart from the START/END lines and the hash line (logs/samples_v2repro_20261119.log,
    logs/exhaustive_v2repro_20261119.log).
-3. **Red controls of the new cross-check** (red_controls/red1.c, red2.c; logs/mulcheck_red_controls_20261119.log): a
+3. **Red controls of the new cross-check** (red_controls/20261119/red1.c, red2.c; logs/mulcheck_red_controls_20261119.log): a
    multiplication cut to a 100-bit word is harmless at s = 16 and refused at s = 17 and 20; a second multiplication with
    its high cross term dropped is refused from s = 11.
 4. **Runs at s = 17-20** (logs/samples_s17_20261119.log ... samples_s20_20261119.log): per s, kcheck_B.c with 10,000
@@ -257,3 +257,46 @@ s <= 18: 3,473,794,464,259,933,681,598 (3.47e21); s <= 19: 55,580,711,366,060,44
 One theorem settles 8.9e23 cells past every published construction. The count rests on the proofs and on the
 literature inputs P, P2 and P3; P2, that nobody has published a search-found 3-row array at q >= 64, is the weakest,
 and it is not a theorem.
+
+## 9. Extension to s = 21 and 22 (20 Nov 2026)
+
+Two programs had 128-bit limits: kcheck_B.c version 2 (exact for 6s <= 127, so s <= 21) and range_cells_B.c version 1
+(4q^3 overflows 128 bits from s = 21). Both were rewritten for wider numbers; the mathematics and the output are
+unchanged. The previous versions are kept here as kcheck_B_v2_20261119.c and range_cells_B_v1_20261118.c.
+
+1. **range_cells_B.c version 2**: 256-bit integers (four words, every product checked for overflow). Its output for
+   s <= 20 equals version 1's byte for byte, and for s <= 22 it equals range_cells_A.py's (out_A.txt = out_B.txt, now to
+   s = 22, with their first 18 lines unchanged). classcheck_C.py agrees on every line to s = 22
+   (logs/classcheck_C_s22_20261120.txt).
+2. **kcheck_B.c version 3**: field elements, polynomials and exponents in four 64-bit words (s <= 30). The main
+   multiplication is now the full carry-less product followed by long division; at start-up it is compared with a
+   shift-and-reduce multiplication on 4,024 pairs, and z^(2^n) = z is tested on 8 elements.
+3. **Byte-for-byte reproduction**: version 3 reproduces every earlier kcheck_B log, s <= 16 and the tampers, the
+   exhaustive runs for s <= 6, and s = 17-20 (logs/v3repro_*_20261120.log). The last line of the s = 17-20 comparison
+   was written by hand after a file-list fix in the comparison script, and says so.
+4. **Red controls** (red_controls/20261120/; logs/mulcheck_red_controls_v3_20261120.log): the main multiplication cut to
+   a 256-bit product, and the cross-check cut to a 128-bit accumulator, are each harmless at s = 21 and refused at s = 22.
+5. **Runs at s = 21 and 22** (logs/samples_s21_20261120.log, logs/samples_s22_20261120.log): kcheck_B.c with 10,000
+   samples per case and kcheck_A.py with 3,000; all 4 clean runs PASS with precondition-broken 0; the tampers inv and bq
+   FAIL and mod and cube are REFUSED in both programs (16 of 16).
+6. **The comparison at s = 21 and 22**: every statement of sections 2-3 is analytic in q or is a number the count programs
+   give to s = 22. R(s) = q1^2 + q1 + 1 with q1 odd; the fusion margin per fused symbol is about 766 q and 1,732 q,
+   above 99 q; q1 is the same under the three class I floors for every s <= 22 (altfloor_C.py,
+   logs/altfloor_C_20261120.txt).
+7. **A fresh referee inside Quantavane** accepted both claims: version 3 is a valid second program for the sampled
+   checks at s = 21 and 22 and its runs pass, and the counts at s = 21 and 22 are right.
+   - It tested version 3's arithmetic against its own field model at s = 1-30 with no disagreement.
+   - It confirmed the moduli irreducible by Berlekamp's and Ben-Or's tests.
+   - It traced 2,376 real case-loop samples per s against its own rank test, with no difference.
+   - It ran the 18 Nov referee's third field model at s = 21 and 22: PASS.
+   - It recounted every number of out_A.txt to s = 22 with its own program.
+
+   Its main caveat: 10,000 samples per case see only defects that hit about 3e-4 or more of a case. A defect as rare as
+   the nuc tamper's, about 1/(q+1) of H3 pairs, passes the sampled runs. Rare cases are carried by the exhaustive runs
+   at s <= 6 and by the proof.
+
+**Result.** Theorem K cells past every published construction: s <= 21: 14,228,662,105,437,402,687,707,131 (1.42e25);
+s <= 22: 227,658,593,685,328,988,782,135,420 (2.28e26). With the 168 keeper-listed cells at q = 16:
+227,658,593,685,328,988,782,135,588. One theorem settles 2.3e26 cells past every published construction. The count
+rests on the proofs and on the literature inputs P, P2 and P3. P2, that nobody has published a search-found 3-row array
+at q >= 64, is the weakest, and it is not a theorem.

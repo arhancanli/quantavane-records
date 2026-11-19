@@ -33,7 +33,7 @@ out = {}
 for line in open(sys.argv[1]):
     w = line.split(); g = lambda k: int(w[w.index(k) + 1]); out[g("s")] = (g("q1"), g("next"), g("margin"), g("R"), g("cells"), g("total"), g("N_K"), g("K"))
 tot = 0
-for s in range(3, 21):
+for s in sorted(out):                                 # every s in the file (s = 3..20 on 20 Nov, 3..22 since)
     q = 4 ** s; NK = 3*q**3 - 2; K = 2*(q*q + q + 1)
     Q = int((NK / 2) ** (1/3)) + 3
     while rows_I(Q, q) > NK or not is_pp(Q): Q -= 1

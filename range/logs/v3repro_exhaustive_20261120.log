@@ -1,0 +1,16 @@
+START Fri Nov 20 00:47:57 +04 2026
+9016930bf87658b6e3ebfa4e526b4d22e9b87fdfa5a6f892bfd8caee64c43b23  kcheck_B.c
+kcheck_B EXHAUSTIVE s 1 n 6 tamper - | H3 0/10 uncovered, H4 0/10, precondition broken 0 | H5 0/40 | PASS
+kcheck_B EXHAUSTIVE s 2 n 12 tamper - | H3 0/136 uncovered, H4 0/136, precondition broken 0 | H5 0/544 | PASS
+kcheck_B EXHAUSTIVE s 3 n 18 tamper - | H3 0/2080 uncovered, H4 0/2080, precondition broken 0 | H5 0/8320 | PASS
+kcheck_B EXHAUSTIVE s 4 n 24 tamper - | H3 0/32896 uncovered, H4 0/32896, precondition broken 0 | H5 0/131584 | PASS
+kcheck_B EXHAUSTIVE s 5 n 30 tamper - | H3 0/524800 uncovered, H4 0/524800, precondition broken 0 | H5 0/2099200 | PASS
+kcheck_B EXHAUSTIVE s 6 n 36 tamper - | H3 0/8390656 uncovered, H4 0/8390656, precondition broken 0 | H5 0/33562624 | PASS
+kcheck_B EXHAUSTIVE s 3 n 18 tamper nuc | H3 32/2080 uncovered, H4 32/2080, precondition broken 0 | H5 1/8320 | FAIL
+kcheck_B EXHAUSTIVE s 3 n 18 tamper inv | H3 0/2080 uncovered, H4 2080/2080, precondition broken 0 | H5 64/8320 | FAIL
+kcheck_B EXHAUSTIVE s 4 n 24 tamper nuc | H3 128/32896 uncovered, H4 128/32896, precondition broken 0 | H5 1/131584 | FAIL
+kcheck_B EXHAUSTIVE s 4 n 24 tamper inv | H3 0/32896 uncovered, H4 32896/32896, precondition broken 0 | H5 256/131584 | FAIL
+kcheck_B EXHAUSTIVE s 5 n 30 tamper nuc | H3 512/524800 uncovered, H4 512/524800, precondition broken 0 | H5 1/2099200 | FAIL
+kcheck_B EXHAUSTIVE s 5 n 30 tamper inv | H3 0/524800 uncovered, H4 524800/524800, precondition broken 0 | H5 1024/2099200 | FAIL
+END Fri Nov 20 01:32:20 +04 2026
+REPRODUCED: 12 kcheck_B lines identical to out/exhaustive_lemma2_20261118.log

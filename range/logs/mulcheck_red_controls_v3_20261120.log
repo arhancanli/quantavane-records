@@ -1,0 +1,19 @@
+# red controls for kcheck_B v3's multiplication cross-check (Fri Nov 20 00:47:06 +04 2026); kcheck_B.c sha256 9016930bf87658b6
+# red1.c: the MAIN multiplication keeps only a 256-bit product (armed after the modulus is fixed): harmless while 2n - 2 < 256 (s <= 21), must REFUSE at s = 22
+# red2.c: the CROSS-CHECK multiplication keeps a 128-bit accumulator: harmless while n < 128 (s <= 21), must REFUSE at s = 22
+red1 s 21
+kcheck_B mulcheck s 21 n 126: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 21 n 126 F 4000000000000000:0000000000000095 samples 10 seed 1 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS
+  exit 0
+red2 s 21
+kcheck_B mulcheck s 21 n 126: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 21 n 126 F 4000000000000000:0000000000000095 samples 10 seed 1 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS
+  exit 0
+red1 s 22
+kcheck_B mulcheck s 22 n 132: main (full product + division) vs shift-reduce 3874/4024 disagree; z^(2^n) = z fails 8/8
+REFUSED: multiplication cross-check
+  exit 2
+red2 s 22
+kcheck_B mulcheck s 22 n 132: main (full product + division) vs shift-reduce 4020/4024 disagree; z^(2^n) = z fails 0/8
+REFUSED: multiplication cross-check
+  exit 2

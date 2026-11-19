@@ -1,0 +1,29 @@
+START Fri Nov 20 00:47:57 +04 2026 load 50.59 58.16 94.60
+445ab8f317e72bb7fca1c5eb5955ebd4d19007dbf01112c2d6577a7293f51ff3  kcheck_A.py
+9016930bf87658b6e3ebfa4e526b4d22e9b87fdfa5a6f892bfd8caee64c43b23  kcheck_B.c
+kcheck_B mulcheck s 21 n 126: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 21 n 126 F 4000000000000000:0000000000000095 samples 10000 seed 1021 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS
+  exit 0
+kcheck_A s 21 q 4398046511104 f 0x40000000027 c 3 samples 3000 seed 2021 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS | sha 445ab8f317e72bb7
+  exit 0
+TAMPERS (each must FAIL or be REFUSED)
+kcheck_B mulcheck s 21 n 126: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 21 n 126 F 4000000000000000:0000000000000095 samples 2000 seed 3021 tamper inv | uncovered/precondition-broken R:0/0 H1:0/0 H2:2000/0 H3:0/0 H4:0/0 H5:0/0 | FAIL
+  exit 1
+kcheck_A s 21 q 4398046511104 f 0x40000000027 c 3 samples 500 seed 4021 tamper inv | uncovered/precondition-broken R:0/0 H1:0/0 H2:500/0 H3:0/0 H4:0/0 H5:0/0 | FAIL | sha 445ab8f317e72bb7
+  exit 1
+kcheck_B mulcheck s 21 n 126: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 21 n 126 F 4000000000000000:0000000000000095 samples 2000 seed 3021 tamper bq | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:2000/0 H4:2000/0 H5:2000/0 | FAIL
+  exit 1
+kcheck_A s 21 q 4398046511104 f 0x40000000027 c 3 samples 500 seed 4021 tamper bq | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:500/0 H4:500/0 H5:500/0 | FAIL | sha 445ab8f317e72bb7
+  exit 1
+REFUSED: modulus not irreducible
+  exit 2
+REFUSED: modulus 0x40000000025 is not irreducible
+  exit 2
+kcheck_B mulcheck s 21 n 126: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+REFUSED: b lies in GF(q)
+  exit 2
+REFUSED: c = 2 is a cube, X^3 - c is reducible
+  exit 2
+END Fri Nov 20 00:52:25 +04 2026
