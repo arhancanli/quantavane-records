@@ -125,6 +125,8 @@ def table_rows(rs):
         st = STATUS[r["status"]] + (", " + r["status_date"] if r["status_date"] else "")
         if r["status_detail"].startswith("unlisted"):
             st += "; not listed under the table's size rule"
+        if r["status_detail"].startswith("listed by Leaps in Bounds"):   # listed by another table than this one's keeper
+            st = r["status_detail"]
         out.append("| %s | %s | %s | %s | %s |" % (esc(r["parameters"]), esc(r["ours"]), esc(prev), st, esc(cert)))
     return out
 
@@ -161,6 +163,8 @@ def main():
         d = os.path.join(ROOT, "tables", f)
         os.makedirs(d, exist_ok=True)
         cnt = collections.Counter(r["status"] for r in rs)
+        other = sum(1 for r in rs if r["status_detail"].startswith("listed by Leaps in Bounds"))
+        cnt["keeper-accepted"] -= other                  # listed by another table, counted apart below
         cells = sum(int(r["cells"]) for r in rs)
         lines = ["# %s: living record table" % cfg["title"], "",
                  "**What a cell holds.** %s" % cfg["reads"], "",
@@ -172,7 +176,8 @@ def main():
                      else "two separately written exact programs from a public Quantavane repository, named there."), "",
                  "**Now.** %s record rows covering %s cells: %s." % (
                      "{:,}".format(len(rs)), "{:,}".format(cells),
-                     ", ".join("{:,} {}".format(cnt[s], STATUS[s]) for s in STATUS if cnt[s])), "",
+                     ", ".join(["{:,} {}".format(cnt[s], STATUS[s]) for s in STATUS if cnt[s]]
+                               + (["{:,} listed by Leaps in Bounds".format(other)] if other else []))), "",
                  "Built from [data/records.csv](../../data/records.csv) by scripts/make_tables.py; the previous best "
                  "is the value the table listed, or the best published value we found, when the record was set. "
                  "Where no public Quantavane file holds the certificate yet, the column says so; for cells a keeper "
