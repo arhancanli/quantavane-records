@@ -1,0 +1,14 @@
+Copyright (c) 2026 Arhan Canli (Quantavane)
+
+The data in data/, the tables in tables/ (TABLE.md, SUBMIT.md, CHECKER.md) and README.md are licensed under the
+Creative Commons Attribution 4.0 International License (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+
+You may share and adapt this material for any purpose, including commercially, provided you give appropriate credit
+("Arhan Canli, Quantavane"), link to the licence, and indicate whether changes were made.
+
+The previous-best values and their sources are quoted from the tables and papers named in each row; please credit
+those tables and their keepers as well. Certificates submitted by others are published under CC BY 4.0 with credit
+to their authors.
+
+The code in qvrecords/, scripts/, tests/ and the checker.py programs in tables/ is licensed separately under the MIT
+License (LICENSE-CODE).

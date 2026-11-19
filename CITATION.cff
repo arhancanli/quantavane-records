@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use these records, please cite them as below, and credit the table that lists each one."
+type: dataset
+title: "Quantavane records: released records with certificates, family cells on demand, and living record tables"
+abstract: "Every record Quantavane has released (listed by a table's keeper, sent to a keeper, or published by Quantavane), with its parameters, value, previous best and source, status, certificate and checks; a Python package that computes and checks any cell of a family theorem on demand; and living record tables with exact checkers and open submissions."
+authors:
+  - family-names: Canli
+    given-names: Arhan
+    affiliation: Quantavane
+    email: arhan@quantavane.com
+license:
+  - CC-BY-4.0
+  - MIT
+url: "https://quantavane.com"
+repository-code: "https://github.com/arhancanli/quantavane-records"
+keywords:
+  - combinatorial records
+  - covering arrays
+  - coding theory
+  - Ramsey numbers
+  - certificates

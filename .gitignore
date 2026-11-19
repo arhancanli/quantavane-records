@@ -1,0 +1,8 @@
+HELD_NOT_PUBLISHED.txt
+__pycache__/
+*.pyc
+.DS_Store
+ruvector.db
+.claude-flow/
+.swarm/
+agentdb.rvf*

@@ -1,0 +1,14 @@
+[project]
+name = "qvrecords"
+version = "0.1.0"
+description = "Quantavane's records, queryable: family-theorem cells computed and checked on demand"
+license = {text = "MIT"}
+authors = [{name = "Arhan Canli"}]
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["qvrecords"]
