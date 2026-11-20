@@ -3,7 +3,7 @@
   python3 -m unittest discover -s tests -v              (about two minutes)
   QV_SLOW=1 python3 -m unittest discover -s tests -v    (adds the exhaustive check at q = 16)
 
-The main test draws 1,000 cells uniformly from the 227,658,593,685,328,988,782,135,588 counted Theorem K cells and checks each
+The main test draws 1,000 cells uniformly from the 14,919,833,595,742,406,466,223,203,805,150 counted Theorem K cells and checks each
 with both routines: the construction routine (field model A, qvrecords.theorem_k) and the independent check
 (field model B, qvrecords.verify), which must agree on every column they both compute, both find every sampled triple
 covered, and pass the certificate.
@@ -41,7 +41,7 @@ class FamilyCells(unittest.TestCase):
             if q != 16:
                 self.assertEqual(verify.counted_range_b(q), (lo, hi), q)
         self.assertEqual(total, sum(n for n, _, _ in declared.values()))
-        self.assertEqual(total, 227658593685328988782135588)
+        self.assertEqual(total, 14919833595742406466223203805150)
 
     def test_1000_random_cells_both_routines(self):
         total, _ = qvrecords.family_cells()
@@ -72,7 +72,7 @@ class FamilyCells(unittest.TestCase):
               % (", ".join("%d: %d" % kv for kv in sorted(by_q.items())), triples, time.time() - t0))
 
     def test_every_q_stratified(self):
-        """20 random counted cells at each of the 21 values of q, so the small fields are tested too"""
+        """20 random counted cells at each of the 25 values of q, so the small fields are tested too"""
         R = random.Random(SEED + 1)
         for q, lo, hi in qvrecords._blocks():
             for n in range(20):
@@ -92,12 +92,19 @@ class FamilyCells(unittest.TestCase):
             self.assertFalse(cert["counted"])
             self.assertTrue(qvrecords.check(cert, samples=4, hard=2)[0], (q, lo - 1))
 
+    def test_model_a_modulus_two_tests(self):
+        """Ben-Or's test (used since 20 Nov 2026) and trial division pick the same first irreducible modulus"""
+        for m in range(2, 23, 2):
+            cands = range((1 << m) | 1, 1 << (m + 1), 2)
+            self.assertEqual(next(f for f in cands if theorem_k._irreducible_benor(f, m)),
+                             next(f for f in cands if theorem_k._irreducible_trial(f, m)), m)
+
     def test_index_roundtrip(self):
         total, by_q = qvrecords.family_cells()
         self.assertEqual(qvrecords.cell_at(0), (16, 379))
         self.assertEqual(qvrecords.cell_at(167), (16, 546))
         self.assertEqual(qvrecords.cell_at(168), (64, 5404))
-        self.assertEqual(qvrecords.cell_at(total - 1), (4 ** 22, 2 * (4 ** 44 + 4 ** 22 + 1)))
+        self.assertEqual(qvrecords.cell_at(total - 1), (4 ** 26, 2 * (4 ** 52 + 4 ** 26 + 1)))
         with self.assertRaises(IndexError):
             qvrecords.cell_at(total)
 

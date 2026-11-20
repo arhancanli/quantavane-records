@@ -12,8 +12,9 @@ covering array CA(3q^3 - 2; 3, k, q) for every k <= 2(q^2+q+1), so CAN(3, k, q) 
 The construction and a sketch of its proof are public in github.com/arhancanli/quantavane-covering-arrays, folder
 three-row/. This module builds the certificate of any cell; qvrecords.verify checks it with separately written code.
 
-Field model A: GF(2^m) as bit vectors modulo the first irreducible polynomial of degree m found by trial division
-(for m = 4 that is x^4 + x + 1, the field of the ca-tools files); products by shift-and-add with reduction at every
+Field model A: GF(2^m) as bit vectors modulo the first irreducible polynomial of degree m in numeric order (found by
+Ben-Or's test since 20 November 2026, trial division before; the same polynomial; for m = 4 it is x^4 + x + 1, the
+field of the ca-tools files); products by shift-and-add with reduction at every
 step; inverses by Fermat (a^(q-2)); GF(q^3) inverses by Cramer's rule on the 3 x 3 multiplication matrix.
 """
 
@@ -33,13 +34,45 @@ def _irreducible_trial(f, m):
     return True
 
 
+def _pmod(a, f):
+    while a.bit_length() >= f.bit_length():
+        a ^= f << (a.bit_length() - f.bit_length())
+    return a
+
+
+def _irreducible_benor(f, m):
+    """True when the binary polynomial f of degree m is irreducible (Ben-Or: x^(2^i) - x is prime to f for every
+    i <= m/2). The same answer as _irreducible_trial, much faster for large m; added 20 November 2026 when the counted
+    range reached q = 4^26 (trial division up to degree 26 would take hours)."""
+    x, u = 2, 2
+    for _ in range(m // 2):
+        u = _pmod(_clmul(u, u), f)
+        a, b = f, u ^ x
+        while b:
+            a, b = b, _pmod(a, b)
+        if a != 1:
+            return False
+    return True
+
+
+def _clmul(a, b):
+    r = 0
+    while b:
+        if b & 1:
+            r ^= a
+        a <<= 1
+        b >>= 1
+    return r
+
+
 class FieldA:
-    """GF(2^m) with the first irreducible modulus found by trial division."""
+    """GF(2^m) with the first irreducible modulus in numeric order (Ben-Or's test; trial division gives the same
+    modulus and is kept as _irreducible_trial, which the tests compare for small m)."""
 
     def __init__(self, m):
         self.m = m
         self.q = 1 << m
-        self.modulus = next(f for f in range((1 << m) | 1, 1 << (m + 1), 2) if _irreducible_trial(f, m))
+        self.modulus = next(f for f in range((1 << m) | 1, 1 << (m + 1), 2) if _irreducible_benor(f, m))
 
     def mul(self, a, b):
         m, f, r = self.m, self.modulus, 0

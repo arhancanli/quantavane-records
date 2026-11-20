@@ -1,4 +1,4 @@
-# Theorem K over a declared range: q = 4^s, 3 <= s <= 22 (18 Nov 2026; s = 17-22 added 20 Nov 2026, sections 8-9)
+# Theorem K over a declared range: q = 4^s, 3 <= s <= 26 (18 Nov 2026; s = 17-26 added 20 Nov 2026, sections 8-10)
 
 Quantavane, 18 Nov 2026; published 19 Nov 2026 with the records dataset. Theorem K itself (the array and a sketch of
 its proof) is public in github.com/arhancanli/quantavane-covering-arrays, folder `three-row/`; a note with the full
@@ -180,8 +180,9 @@ is the 168 cells the keeper lists.
 
 **Declared range s <= 20 (20 Nov 2026): 889,291,381,663,667,581,255,520 cells (8.9e23), plus 168 at q = 16.** Until
 20 Nov the declared range stopped at s = 16 (13,569,510,036,461,448,720 cells, 1.36e19) because the second array
-checker, kcheck_B.c, refused s > 16; section 8 records the extension to s = 20 and section 9 the extension to s = 22
-(2.28e26). Step by step: s <= 17 gives 2.17e20, s <= 18 3.47e21, s <= 19 5.56e22, s <= 21 1.42e25.
+checker, kcheck_B.c, refused s > 16; sections 8, 9 and 10 record the extensions to s = 20, 22 and 26 (1.49e31). Step
+by step: s <= 17 gives 2.17e20, s <= 18 3.47e21, s <= 19 5.56e22, s <= 20 8.9e23, s <= 21 1.42e25, s <= 22 2.28e26,
+s <= 23 3.64e27, s <= 24 5.83e28, s <= 25 9.32e29.
 
 ## 6. How to read this number
 
@@ -300,3 +301,57 @@ s <= 22: 227,658,593,685,328,988,782,135,420 (2.28e26). With the 168 keeper-list
 227,658,593,685,328,988,782,135,588. One theorem settles 2.3e26 cells past every published construction. The count
 rests on the proofs and on the literature inputs P, P2 and P3. P2, that nobody has published a search-found 3-row array
 at q >= 64, is the weakest, and it is not a theorem.
+
+## 10. Extension to s = 23, 24, 25 and 26 (20 Nov 2026)
+
+No checker changed. kcheck_B.c version 3 and kcheck_A.py already run to s = 30, and range_cells_B.c version 2 does too.
+
+1. **Counts.** range_cells_A.py and range_cells_B.c agree to s = 26. out_A.txt and out_B.txt now run to s = 26, and
+   their first 20 lines are unchanged. classcheck_C.py agrees on all 24 lines (logs/classcheck_C_s26_20261120.txt).
+   - A fault was found and fixed on the way. classcheck_C.py started its class I scan from a floating-point cube root,
+     which is off by 1 at s = 24, 3 at s = 25 and 9 at s = 26. From s = 25 the start landed on or below the boundary,
+     and the program's own assertion stopped it. altfloor_C.py had the same start without an assertion.
+   - Both now use an exact integer cube root (version 2; version 1 is kept as classcheck_C_v1_20261120.py and
+     altfloor_C_v1_20261120.py). Their output on s <= 22 is unchanged.
+2. **The comparison at s = 23-26.** R(s) = q1^2 + q1 + 1 with q1 odd. Classes II over Q > q, III, IV and P hold, and
+   IIa, IIb, IId and IIe stay below R(s). The fusion margin per fused symbol is about 163 q, 3,560 q, 1,716 q and 862 q,
+   above the 99 q floor. q1 is the same under the three class I floors for every s <= 26
+   (logs/altfloor_C_s26_20261120.txt).
+3. **Runs** (logs/samples_s23_20261120.log through samples_s26_20261120.log): kcheck_B.c with 10,000 samples per case
+   and kcheck_A.py with 3,000.
+   - All 8 clean runs PASS with precondition-broken 0.
+   - The tampers inv and bq FAIL, and mod and cube are REFUSED, in both programs (32 of 32).
+   - The multiplication cross-check is 0 of 4,024 at every s.
+4. **This package.** Model A (qvrecords/theorem_k.py) found its modulus by trial division, which would take hours at
+   degree 52. It now uses Ben-Or's test, which picks the same first irreducible polynomial:
+   - the same as kcheck_A.py's for every s <= 26;
+   - the same as trial division for every degree the old code reached;
+   - and a new test checks this for small degrees.
+
+   The range check in qvrecords/verify.py is now cached per q.
+5. **A fresh referee inside Quantavane**, for s = 23-26:
+   - It accepted that the counts are right and the comparison holds, checking them with its own recount using two exact
+     prime-power tests.
+   - It accepted that both checkers' runs pass with every tamper refused. Its own build of kcheck_B.c reproduces every
+     logged line, and the moduli are irreducible by Ben-Or's and Berlekamp's tests. Against its own field model and its
+     own rank test there were 0 disagreements.
+   - It accepted the package and tool changes with fixes. Those were the files of this package that had not yet been
+     brought to s = 26; they are done.
+   - Its notes:
+     - At these s the evidence is the arithmetic plus Lemmas 1 and 2 on generic hard cases. Rare cases are carried by
+       the proof and by the exhaustive runs at s <= 6.
+     - The scan for the next prime power in range_cells_A.py can skip boundary + 1. That is harmless for s <= 26, because
+       no prime power sits there and the other programs scan from q1 + 1, but it must be fixed before any further
+       extension.
+     - This package's counted range uses the plain Sherwood class I floor. That is harmless because q1 is the same under
+       all three floors for s <= 26.
+
+**Result.** Theorem K cells past every published construction:
+- s <= 23: 3,642,537,498,964,863,748,005,427,681 (3.64e27)
+- s <= 24: 58,280,599,983,380,633,406,793,366,774 (5.83e28)
+- s <= 25: 932,489,599,733,914,064,019,621,795,469 (9.32e29)
+- s <= 26: 14,919,833,595,742,406,466,223,203,804,982 (1.49e31)
+
+With the 168 keeper-listed cells at q = 16: 14,919,833,595,742,406,466,223,203,805,150. One theorem settles 1.5e31 cells
+past every published construction. The count rests on the proofs and on the literature inputs P, P2 and P3. P2, that
+nobody has published a search-found 3-row array at q >= 64, is the weakest input, and it is not a theorem.

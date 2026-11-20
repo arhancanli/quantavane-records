@@ -5,7 +5,7 @@ Written separately from qvrecords.theorem_k and importing nothing from it. It re
 different algorithms:
 
 - GF(2^m): full carry-less product, then reduction by long division; inverses by the extended Euclidean algorithm on
-  binary polynomials; the modulus is tested by Rabin's irreducibility test (model A uses trial division).
+  binary polynomials; the modulus is tested by Rabin's irreducibility test (model A uses Ben-Or's test, trial division before 20 Nov 2026).
 - GF(q^3) = GF(q)[X]/(X^3 - c): products by schoolbook polynomial multiplication and reduction with X^3 = c;
   inverses by the extended Euclidean algorithm over GF(q)[X] (model A uses Cramer's rule).
 - independence of three vectors of GF(q)^3: rank by Gaussian elimination (model A uses the determinant).
@@ -20,6 +20,7 @@ practical for q <= 16. The covering property of all 2(q^2 + q + 1) columns is th
 github.com/arhancanli/quantavane-covering-arrays, three-row/); the sampled check tests the construction at this
 cell, the exhaustive one proves it for that q.
 """
+import functools
 import random
 
 
@@ -223,6 +224,7 @@ def _cube_root_floor(n):
     return r
 
 
+@functools.lru_cache(maxsize=None)                     # a pure function of q; cached since the range reached s = 26
 def counted_range_b(q):
     if q == 16:
         return 379, 546

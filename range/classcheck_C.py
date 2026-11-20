@@ -28,6 +28,13 @@ def is_pp(n):
         r = iroot(n, e)
         if r and is_prime(r): return True
     return False
+def icbrt(n):                                          # exact floor cube root (v2, 20 Nov 05:2x: float roots err by > 3 from s = 25)
+    lo, hi = 0, 1 << (n.bit_length() // 3 + 2)
+    while lo < hi:
+        mid = (lo + hi + 1) // 2
+        if mid ** 3 <= n: lo = mid
+        else: hi = mid - 1
+    return lo
 rows_I = lambda Q, q: 2*Q**3 - Q**2 - 2*(Q - q)          # RANGE.md class I floor with fusion
 out = {}
 for line in open(sys.argv[1]):
@@ -35,11 +42,11 @@ for line in open(sys.argv[1]):
 tot = 0
 for s in sorted(out):                                 # every s in the file (s = 3..20 on 20 Nov, 3..22 since)
     q = 4 ** s; NK = 3*q**3 - 2; K = 2*(q*q + q + 1)
-    Q = int((NK / 2) ** (1/3)) + 3
+    Q = icbrt(NK // 2) + 3
     while rows_I(Q, q) > NK or not is_pp(Q): Q -= 1
     nx = Q + 1
     while not is_pp(nx): nx += 1
-    assert rows_I(nx, q) > NK and rows_I(int((NK / 2) ** (1/3)) + 3, q) > NK
+    assert rows_I(nx, q) > NK and rows_I(icbrt(NK // 2) + 3, q) > NK
     R1 = Q*Q + Q + 1 if Q % 2 else (Q + 1)**2
     R = max(R1, (q + 1)**2)                        # class I incl. the power of 2 in [q, q1]
     IIa = (q + 2)**2 + q + 2; IIb = 4 * int(q ** 1.5) + 3 + 1; IId = q*q + 2*q + 2; IIe = q*q + 5*q
