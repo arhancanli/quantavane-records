@@ -1,0 +1,29 @@
+START Fri Nov 20 18:37:12 +04 2026 load 57.47 55.47 39.16
+445ab8f317e72bb7fca1c5eb5955ebd4d19007dbf01112c2d6577a7293f51ff3  kcheck_A.py
+cdc9b5fec1b95dcf7d028bafe89d5751b7bef21570d2e8fd7f22a584083aa299  kcheck_B.c
+kcheck_B mulcheck s 31 n 186: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 31 n 186 F 400000000000000:0000000000000000:000000000000019d samples 10000 seed 1031 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS
+  exit 0
+kcheck_A s 31 q 4611686018427387904 f 0x4000000000000069 c 2 samples 3000 seed 2031 tamper - | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:0/0 H4:0/0 H5:0/0 | PASS | sha 445ab8f317e72bb7
+  exit 0
+TAMPERS (each must FAIL or be REFUSED)
+kcheck_B mulcheck s 31 n 186: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 31 n 186 F 400000000000000:0000000000000000:000000000000019d samples 2000 seed 3031 tamper inv | uncovered/precondition-broken R:0/0 H1:0/0 H2:2000/0 H3:0/0 H4:0/0 H5:0/0 | FAIL
+  exit 1
+kcheck_A s 31 q 4611686018427387904 f 0x4000000000000069 c 2 samples 500 seed 4031 tamper inv | uncovered/precondition-broken R:0/0 H1:0/0 H2:500/0 H3:0/0 H4:0/0 H5:0/0 | FAIL | sha 445ab8f317e72bb7
+  exit 1
+kcheck_B mulcheck s 31 n 186: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+kcheck_B s 31 n 186 F 400000000000000:0000000000000000:000000000000019d samples 2000 seed 3031 tamper bq | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:2000/0 H4:2000/0 H5:2000/0 | FAIL
+  exit 1
+kcheck_A s 31 q 4611686018427387904 f 0x4000000000000069 c 2 samples 500 seed 4031 tamper bq | uncovered/precondition-broken R:0/0 H1:0/0 H2:0/0 H3:500/0 H4:500/0 H5:500/0 | FAIL | sha 445ab8f317e72bb7
+  exit 1
+REFUSED: modulus not irreducible
+  exit 2
+REFUSED: modulus 0x400000000000006b is not irreducible
+  exit 2
+kcheck_B mulcheck s 31 n 186: main (full product + division) vs shift-reduce 0/4024 disagree; z^(2^n) = z fails 0/8
+REFUSED: b lies in GF(q)
+  exit 2
+REFUSED: c = 8 is a cube, X^3 - c is reducible
+  exit 2
+END Fri Nov 20 18:43:28 +04 2026

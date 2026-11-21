@@ -89,8 +89,8 @@ def main():
         while not (qp >= q and rows_I(qp, q) <= NK and is_prime_power(qp)):
             qp -= 1
         q1 = qp
-        q2 = top
-        while not is_prime_power(q2):
+        q2 = q1 + 1                             # v2 (20 Nov 2026): scan up from q1 + 1; v1 began at `top`, which can lie
+        while not is_prime_power(q2):           # one above the boundary and so skip a prime power at boundary + 1
             q2 += 1
         f = lambda x: x * x + x + 1 if x % 2 else (x + 1) ** 2
         e = q

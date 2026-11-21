@@ -14,7 +14,10 @@
    and tests z^(2^n) = z on 8 random z; it refuses on any mismatch and reports to stderr only. Random elements take
    ceil(n/64) words from the stream, highest word first (two words, as in v1/v2, for n <= 128), and every pair of
    random draws is now made in a fixed order, so stdout at s <= 20 must be that of v1/v2 byte for byte. The exhaustive
-   mode (SAMPLES = 0) is refused above s = 8 (it was run for s <= 6 only). */
+   mode (SAMPLES = 0) is refused above s = 8 (it was run for s <= 6 only).
+   v3.1 (20 Nov 2026 18:3x, v3 kept as kcheck_B_v3_20261120.c): the cap is raised from s <= 30 to s <= 40; nothing else
+   changes. The four-word layout is valid to n = 255 (s <= 42): elements, F and exponents fit four words, the shift-and-
+   reduce accumulator needs n + 1 <= 256 bits, and the product buffer of eight words holds degree 2n - 2 <= 508. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -157,7 +160,7 @@ int main(int argc, char **argv) {
     if (argc < 4) { fprintf(stderr, "usage\n"); return 2; }
     int s = atoi(argv[1]), samples = atoi(argv[2]); st ^= (u64)atoll(argv[3]) * 0x9E3779B97F4A7C15ULL;
     if (argc > 4) T = argv[4];
-    if (s < 1 || s > 30) { fprintf(stderr, "1 <= s <= 30\n"); return 2; }      /* v3: n = 6s <= 180 < 64 NWMAX */
+    if (s < 1 || s > 40) { fprintf(stderr, "1 <= s <= 40\n"); return 2; }      /* v3.1: n = 6s <= 240 < 64 NWMAX */
     if (samples == 0 && s > 8) { printf("REFUSED: exhaustive mode needs s <= 8\n"); return 2; }
     n = 6 * s; S2 = 2 * s;
     for (E f = esetbit(ez(1), n); ; f.w[0] += 2) if (rabin(f, n)) { F = f; break; }

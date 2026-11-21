@@ -14,7 +14,7 @@ results whose second check is not on file.
 | Path | What it holds |
 |---|---|
 | `data/records.csv` | 3,161 records, one row each (columns below) |
-| `data/families.csv` | the family theorem rows: 25 ranges of Theorem K, counted apart from the records |
+| `data/families.csv` | the family theorem rows: 30 ranges of Theorem K, counted apart from the records |
 | `qvrecords/` | the package: `cell`, `check`, `cell_at`, `family_cells`, `records`, `record`, `ca_record` |
 | `tables/` | 12 living record tables: `TABLE.md`, `CHECKER.md`, `checker.py`, `SUBMIT.md` in each |
 | `tests/` | the 1,000-cell family test and the checker tests |
@@ -38,13 +38,13 @@ table had left empty; 98,906 are project-scheduling instances (each counted once
 construction we found (`kind` = `past-tables`; github.com/arhancanli/quantavane-covering-arrays, `wide/README.md`,
 "Which cells count"). The records are in 21 fields; `python3 -m qvrecords summary` prints them by field and status.
 
-**Family cells** (`data/families.csv`, served by `qvrecords`): 14,919,833,595,742,406,466,223,203,805,150 cells of the
-form CAN(3, k, q) <= 3q^3 - 2, from Theorem K over q = 16 and q = 4^s for 3 <= s <= 26. The 168 cells at q = 16
+**Family cells** (`data/families.csv`, served by `qvrecords`): 15,644,579,432,489,009,039,685,660,184,870,289,447
+cells of the form CAN(3, k, q) <= 3q^3 - 2, from Theorem K over q = 16 and q = 4^s for 3 <= s <= 31. The 168 cells at q = 16
 (379 <= k <= 546) are listed in the ca-tools table (the keeper merged them on 17 November 2026). The others lie past
-every published table: no table lists strength 3 at q >= 64. In words: one theorem settles 1.5e31 cells past every
-published construction. That is one result, not 1.5e31 separate discoveries; the count is set by where the declared
-range stops (s <= 16, the range until 20 November 2026, gives 1.4e19; s = 17 to 26 were added on 20 November 2026,
-`range/RANGE.md` sections 8 to 10).
+every published table: no table lists strength 3 at q >= 64. In words: one theorem settles 1.6e37 cells past every
+published construction. That is one result, not 1.6e37 separate discoveries; the count is set by where the declared
+range stops (s <= 16, the range until 20 November 2026, gives 1.4e19; s = 17 to 31 were added on 20 November 2026,
+`range/RANGE.md` sections 8 to 11).
 
 ## Counting rules
 
@@ -92,7 +92,7 @@ python3 -m qvrecords index 1000000000000 --check    # the 10^12-th counted famil
 from qvrecords import cell, check, cell_at, family_cells
 value, cert = cell("theorem-k", {"q": 4**10, "k": 2 * 10**12})
 ok, report = check(cert)                 # (True, [("PASS", "modulus irreducible ..."), ...])
-total, by_q = family_cells()             # 14919833595742406466223203805150
+total, by_q = family_cells()             # 15644579432489009039685660184870289447
 q, k = cell_at(123456789)                # the cell with that index
 ```
 
@@ -123,7 +123,7 @@ search could remove the bottom of a q's range. P2 is the weakest input of the co
 statement about what has been published, not a theorem. The number is one theorem settling many cells past every
 published construction, not that many separate discoveries. At q = 16 the counted range is the one the keeper lists.
 
-Tests: `python3 -m unittest discover -s tests` draws 1,000 cells uniformly from all 1.5e31 counted cells and checks
+Tests: `python3 -m unittest discover -s tests` draws 1,000 cells uniformly from all 1.6e37 counted cells and checks
 each with both routines (the construction's and the independent one must agree on every column they both compute,
 both find every sampled triple covered, and the certificate must pass); it also tests 20 cells at each q, the ends of
 every range, eight damaged certificates (all fail) and the whole covering array at q = 4 by its definition.

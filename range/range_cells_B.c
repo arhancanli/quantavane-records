@@ -5,7 +5,10 @@
    identical byte for byte.  build: cc -O2 -o range_cells_B range_cells_B.c   usage: range_cells_B SMAX [--nk-offset D]
    v2 (20 Nov 2026): 256-bit unsigned integers (four 64-bit words, every product checked for overflow) in place of
    unsigned __int128, so SMAX <= 30 (was 20: 4q^3 overflows 128 bits from s = 21). The logic and the output are those
-   of v1 (kept as range_cells_B_v1_20261118.c); its output for SMAX = 20 must equal out_B.txt byte for byte. */
+   of v1 (kept as range_cells_B_v1_20261118.c); its output for SMAX = 20 must equal out_B.txt byte for byte.
+   v2.1 (20 Nov 2026 18:3x, v2 kept as range_cells_B_v2_20261120.c): the cap is raised from SMAX <= 30 to SMAX <= 31,
+   the real limit of this program: q1 and the next prime power must fit 64 bits for the trial division (small() exits
+   otherwise), and q1 is about 1.14 * 4^s, below 2^64 only for s <= 31. Nothing else changes. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,7 +79,7 @@ static U rowsI(U qp, U q) {              /* restricted pair: 2Q^3 - Q^2 - 2(Q - 
 int main(int argc, char **argv) {
     int smax = argc > 1 ? atoi(argv[1]) : 10; long long off = 0;
     for (int i = 2; i + 1 < argc; i++) if (!strcmp(argv[i], "--nk-offset")) off = atoll(argv[i + 1]);
-    if (smax > 30) { fprintf(stderr, "SMAX <= 30 (256-bit range)\n"); return 2; }
+    if (smax > 31) { fprintf(stderr, "SMAX <= 31 (q1 must fit 64 bits)\n"); return 2; }
     U total = uz(0), one = uz(1), two = uz(2);
     for (int s = 3; s <= smax; s++) {
         U q = ushl1(2 * s), qq = umul(q, q), q3 = umul(qq, q);

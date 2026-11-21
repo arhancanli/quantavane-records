@@ -1,0 +1,3 @@
+# kcheck_B v3.1 (cap 40) vs v3 (cap 30): stdout and exit codes on the same commands (Fri Nov 20 18:44:02 +04 2026)
+identical 63 of 63 command outputs
+s = 31: v3 refuses (1 <= s <= 30), v3.1 runs

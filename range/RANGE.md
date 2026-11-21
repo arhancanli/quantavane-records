@@ -1,4 +1,4 @@
-# Theorem K over a declared range: q = 4^s, 3 <= s <= 26 (18 Nov 2026; s = 17-26 added 20 Nov 2026, sections 8-10)
+# Theorem K over a declared range: q = 4^s, 3 <= s <= 31 (18 Nov 2026; s = 17-31 added 20-21 Nov 2026, sections 8-11)
 
 Quantavane, 18 Nov 2026; published 19 Nov 2026 with the records dataset. Theorem K itself (the array and a sketch of
 its proof) is public in github.com/arhancanli/quantavane-covering-arrays, folder `three-row/`; a note with the full
@@ -180,9 +180,10 @@ is the 168 cells the keeper lists.
 
 **Declared range s <= 20 (20 Nov 2026): 889,291,381,663,667,581,255,520 cells (8.9e23), plus 168 at q = 16.** Until
 20 Nov the declared range stopped at s = 16 (13,569,510,036,461,448,720 cells, 1.36e19) because the second array
-checker, kcheck_B.c, refused s > 16; sections 8, 9 and 10 record the extensions to s = 20, 22 and 26 (1.49e31). Step
+checker, kcheck_B.c, refused s > 16; sections 8 to 11 record the extensions to s = 20, 22, 26 and 31 (1.56e37). Step
 by step: s <= 17 gives 2.17e20, s <= 18 3.47e21, s <= 19 5.56e22, s <= 20 8.9e23, s <= 21 1.42e25, s <= 22 2.28e26,
-s <= 23 3.64e27, s <= 24 5.83e28, s <= 25 9.32e29.
+s <= 23 3.64e27, s <= 24 5.83e28, s <= 25 9.32e29, s <= 26 1.49e31, s <= 27 2.39e32, s <= 28 3.82e33, s <= 29 6.11e34,
+s <= 30 9.78e35.
 
 ## 6. How to read this number
 
@@ -355,3 +356,48 @@ No checker changed. kcheck_B.c version 3 and kcheck_A.py already run to s = 30, 
 With the 168 keeper-listed cells at q = 16: 14,919,833,595,742,406,466,223,203,805,150. One theorem settles 1.5e31 cells
 past every published construction. The count rests on the proofs and on the literature inputs P, P2 and P3. P2, that
 nobody has published a search-found 3-row array at q >= 64, is the weakest input, and it is not a theorem.
+
+## 11. Extension to s = 27, 28, 29, 30 and 31 (20-21 Nov 2026)
+
+1. **range_cells_A.py, version 2.** Version 1 is kept as range_cells_A_v1_20261118.py.
+   - The fix: the scan for the next prime power now starts at q1 + 1. Version 1 could skip boundary + 1, as the
+     s = 23-26 referee found.
+   - The output is unchanged for every s <= 31, so no count so far was affected.
+2. **Caps raised, nothing else changed.**
+   - kcheck_B.c version 3.1 (version 3 kept as kcheck_B_v3_20261120.c) runs to s <= 40; its layout holds to s = 42. Its
+     stdout and exit codes equal version 3's on 63 commands (logs/v31_vs_v3_20261120.txt).
+   - range_cells_B.c version 2.1 (version 2 kept as range_cells_B_v2_20261120.c) runs to s <= 31. That is its real
+     limit: q1 must fit 64 bits for its trial division.
+3. **Counts.** out_A.txt and out_B.txt agree to s = 31, and classcheck_C.py agrees on all 29 lines
+   (logs/classcheck_C_s31_20261120.txt). The comparison holds at s = 27-31:
+   - R(s) = q1^2 + q1 + 1, with q1 odd;
+   - the fusion margin per fused symbol is about 4,288 q, 2,022 q, 6,976 q, 1,364 q and 2,062 q, above 99 q;
+   - q1 is the same under the three class I floors for every s <= 31 (logs/altfloor_C_s31_20261120.txt), so this
+     package's plain-Sherwood floor is still safe.
+4. **Runs** (logs/samples_s27_20261120.log through samples_s31_20261120.log):
+   - all 10 clean runs PASS, with precondition-broken 0;
+   - the tampers inv and bq FAIL, and mod and cube are REFUSED, in both programs (40 of 40);
+   - the cross-check is 0 of 4,024 at every s.
+5. **A fresh referee inside Quantavane** accepted all three claims, with no fix needed:
+   - **Counts.** Its own recount, using two exact prime-power tests, matches every field to s = 31.
+   - **Runs and caps.** Both checkers' runs pass with every tamper refused, and the cap raises are safe. Its own field
+     model agrees with kcheck_B.c to s = 42. The moduli are irreducible by tests other than Rabin's. Its own re-runs of
+     every logged kcheck_B line are identical.
+   - **The range_cells_A fix.** It is correct and changes no output.
+
+   Limits, as before: at these s the sampled evidence is the arithmetic plus Lemmas 1-2 on generic hard cases, and the
+   proof and the s <= 6 exhaustive runs carry the rare cases.
+
+**Result.** Theorem K cells past every published construction:
+
+| s <= | Theorem K cells |
+|---|---|
+| 27 | 238,717,337,531,876,712,700,052,775,744,501 (2.39e32) |
+| 28 | 3,819,477,400,510,019,653,577,031,683,288,286 (3.82e33) |
+| 29 | 61,111,638,408,160,208,965,274,172,539,470,095 (6.11e34) |
+| 30 | 977,786,214,530,563,073,982,785,041,129,828,838 (9.78e35) |
+| 31 | 15,644,579,432,489,009,039,685,660,184,870,289,279 (1.56e37) |
+
+With the 168 keeper-listed cells at q = 16: 15,644,579,432,489,009,039,685,660,184,870,289,447. One theorem settles 1.6e37
+cells past every published construction. The count rests on the proofs and on the literature inputs P, P2 and P3. P2,
+that nobody has published a search-found 3-row array at q >= 64, is the weakest input, and it is not a theorem.
